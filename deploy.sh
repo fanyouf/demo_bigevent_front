@@ -20,6 +20,6 @@ set -e
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
 
 # 部署到 https://<USERNAME>.github.io/<REPO>
-git push -f https://github.com/fanyoufu/demo_bigevent_demo master:gh-pages
+git push -f https://github.com/fanyoufu/demo_bigevent_front master:gh-pages
 
 cd -

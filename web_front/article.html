@@ -303,7 +303,9 @@
                 // 对于所有的评论数据，给每一条数据中额外添加一个相对时间的属性
                 // 然后，在模板引擎中使用这个属性
                 res.data.forEach(function (item) {
-                    item.relativeDt = dayjs(item.dt).toNow()
+                    
+                    // item.relativeDt = dayjs(item.dt).toNow()
+                    item.relativeDt = dayjs().to(dayjs(item.dt))
                 })
                 console.log(res.data)
                 // 用模板引擎 渲染数据

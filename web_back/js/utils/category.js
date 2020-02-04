@@ -1,4 +1,10 @@
+require.config({
+    paths: {
+          config: '../utils/config'
+    }
+  });
 
+define(['config'], function(APIURLS) {
 var category = {
     show : function( ){
         // alert('获取数据')
@@ -14,3 +20,5 @@ var category = {
         return $.post(APIURLS.category_edit, {'id': id, 'name':name,'slug':slug})
     }
 }
+return category
+})

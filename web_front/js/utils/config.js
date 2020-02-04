@@ -1,5 +1,6 @@
 // 整个项目的基地址
-const BASE_URL = 'https://39.99.130.177:8000/'
+// const BASE_URL = 'https://39.99.130.177:8000/'
+const BASE_URL = 'https://www.fanyoufu.com/api/'
 // const BASE_URL = 'http://localhost:8000/'
 
 // 列出所有用过的接口的地址

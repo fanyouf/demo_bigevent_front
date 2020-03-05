@@ -37,7 +37,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control" id="categoryContainer" name="type">
+                        <select class="form-control" id="categoryContainer" name="typeId">
             
                         </select>
                     </div>
@@ -91,16 +91,15 @@
     // alert( location.search )
     // str.substr(起点下标，长度)。如果不写长度，则取从起点到结束的全部子串
     var id = location.search.substr(4);
-    
 
     // 2. 根据 id去求接口，获取对应文章的详情
     article.getDetail(id).then(function(res){
         // console.log(res);
         // 当前文章所属的类别 id
-        var typeId = res.data.type;
+        var typeId = res.data.typeId;
         // 3. 显示在表单元素中
         $('#article_title').val( res.data.title )
-        $('#article_cover').prop("src", res.data.cover)
+        $('#article_cover').prop("src", res.data.coverPath)
         $('#dateinput').val(res.data.date)
         $('#rich_content').val(res.data.content)
 
@@ -112,10 +111,7 @@
             // 让当前文章所属的类别 id处于选中状态
             // $("#categoryContainer").val("4")
             $("#categoryContainer").val(typeId)
-            
-        })
-        // res.data
-        
+        }) 
     })
     // 4. 用户再修改，再保存
     $('#btnSave').click(function(){
@@ -134,9 +130,7 @@
             } 
         })
     })
-    
     </script>
-
 </body>
 
 </html>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +9,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
-    
 </head>
-
 <body>
     <div class="container-fluid">
         <div class="common_title">
@@ -93,12 +90,20 @@
         <tr>
             <td>{{item.title}}</td>
             <td>{{item.author}}</td>
-            <td>{{item.type}}</td>
+            <td>{{item.typeName}}</td>
             <td class="text-center">{{item.date}}</td>
-            <td class="text-center">{{item.state}}</td>
+            <td class="text-center">{{item.state}}
+
+                {{if item.state=="草稿"}}
+                <a href="javascript:;" data-id="{{item.id}}" data-state="{{item.state}}" class="btn btn-danger btn-xs mod">上架</a>
+                {{else}}
+                <a href="javascript:;" data-id="{{item.id}}" data-state="{{item.state}}" class="btn btn-normal btn-xs mod">下架</a>
+                {{/if}}
+            </td>
             <td class="text-center">
                 <a href="article_edit.html?id={{item.id}}" class="btn btn-default btn-xs">编辑</a>
                 <a href="javascript:;" data-id="{{item.id}}" class="btn btn-danger btn-xs del">删除</a>
+                
             </td>
         </tr>
         {{/each}}
@@ -110,8 +115,6 @@
             <option value="{{item.id}}">{{item.name}}</option>
         {{/each}}
     </script>
-
-    
 
     <script>
         // 初始化 文章分类下拉列表
@@ -127,7 +130,7 @@
     <script>
         // 全局变量 
         var curPage = ''; // 表示当前要展示第几页
-        var type = ''; // 表示文章的类型
+        var typeId = ''; // 表示文章的类型
         var state = ''; // 表示文章的状态
 
         var curTotalPage = ''; // 表示当前查询总页数
@@ -136,7 +139,7 @@
 
         // 获取数据，并展示在表格中
         function getAndShow() {
-            article.show(curPage,type,state).then(function(res){
+            article.show(curPage,typeId,state).then(function(res){
                 // 取回数据
                 // console.log(res);
                 if(res.code === 200){
@@ -171,6 +174,7 @@
                             prev: '上一页',
                             next: '下一页',
                             last: '尾页',
+                            initiateStartPageClick:false,
                             onPageClick: function (event, page) {
                                 // 点击页码：
                                 // 1. 更新全局变量
@@ -189,9 +193,9 @@
         $('#btnSearch').click( function () {
             // 1. 获取当前的筛选条件。保存到全局变量中
             // 如何获取下拉列表中当前选中的值
-            type = $('#selCategory').val()
+            typeId = $('#selCategory').val()
             state = $('#selStatus').val()
-            console.log(type,state);
+            console.log(typeId,state);
 
             // 筛选条件变化，直接固定选第一页
             curPage = 1
@@ -217,6 +221,27 @@
                 }
             })
         })
+    
+        // 文章状态切换
+        $('#articleContainer').on('click','.mod', function(e){
+            // console.log(e)
+            // 从dom中取出自定义 属性
+            var id = $(this).attr('data-id')
+            var state = $(this).attr('data-state')
+            if(window.confirm(`确认要${e.target.innerHTML}吗？`) === false){
+                return;
+            }
+            state = state=="已发布" ? "草稿":"已发布"
+
+            article.modState(id,state).then(function(res){
+                if(res.code === 200){
+                    // 删除成功，重新请求
+                    getAndShow()
+                }
+            })
+        })
+    
+        
     </script>
 
 </body>

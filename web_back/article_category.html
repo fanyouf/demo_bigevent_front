@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/jquery-1.12.4.min.js"></script>
-    <script src="js/bootstrap/js/bootstrap.min.js"></script>
+   
 </head>
 
 <body>
@@ -111,6 +110,9 @@
             </div>
         </div>
     </div>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/bootbox.min.js"></script>
     <script src="./js/utils/config.js"></script>
     <script src="./js/utils/category.js"></script>
     <script src="./js/template-web.js"></script>
@@ -213,6 +215,8 @@
                     getAndShow()
                     // 2. 隐藏模态框
                     $('#editModal').modal('hide');
+                } else {
+                    alert(res.msg)
                 }
             })
         })

@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control" name="type" id="categoryContainer">
+                        <select class="form-control" name="typeId" id="categoryContainer">
                             <!-- <option value="1">科学</option> -->
                         </select>
                     </div>
@@ -74,7 +74,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="button" class="btn btn-success" id="btnAdd">发布</button>
-                        <button type="submit" class="btn btn-default">存为草稿</button>
+                        <button type="button" class="btn btn-default" id="btnAddDraft">存为草稿</button>
                     </div>
                 </div>
             </form>
@@ -123,30 +123,27 @@
                 $('#previewImg').prop('src', url)
             }
         })
-        // 发布文章
-        $('#btnAdd').click(function(){
+        // 草稿
+        $('#btnAddDraft').click(function(){
+            add('草稿')
+        })
+        function add(state){
             // 收集表单信息
             // var fd = new FormData( form dom节点)
-             var fd = new FormData( document.getElementById('myform'));
+            var fd = new FormData( document.getElementById('myform'));
 
-             console.log(fd);
-             console.log(fd.get('title'));
+            // 手动添加一个参数
+            fd.append('state',state)
 
-             // 手动添加一个参数
-             fd.append('state', '已发布')
-
-             // 如果要获取富文本编辑中的内容，
-             // 则需要调用它自己的api，而不能直接从textarea中取
-             // fd.set(key,value); 会覆盖fd中的key
-             fd.set('content', tinyMCE.activeEditor.getContent())
-
-            // 发请求，调用接口.
-            // 在article.js中准备一个添加文章的方法
-            article.add(fd).then(function(res){
-                console.log(res);
+            // 如果要获取富文本编辑中的内容，
+            // 则需要调用它自己的api，而不能直接从textarea中取
+            // fd.set(key,value); 会覆盖fd中的key
+            fd.set('content', tinyMCE.activeEditor.getContent())
+            article.add(fd).then((res)=>{
                 if(res.code === 201){
                     if( confirm("添加成功，是否继续添加？") ){
                         $('#article_title').val('')
+                        tinyMCE.activeEditor.setContent('')
 
                     } else {
                         location.href = "./article_list.html"
@@ -155,6 +152,10 @@
                     alert(res.msg)
                 }
             })
+        }
+        // 发布文章
+        $('#btnAdd').click(function(){
+            add('已发布')
         })
     </script>
 

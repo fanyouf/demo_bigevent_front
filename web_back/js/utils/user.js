@@ -1,10 +1,9 @@
 
-// 模块
-// 把所有的，有关于用户的操作全写在一起
+// 用户的操作
 var user = {
     logout:  () => $.post(APIURLS.user_logout), 
 
-    login: function(myName, myPassword) {
+    login: (myName, myPassword) => {
         // console.log(myName,myPassword)
         return $.post(APIURLS.user_login,
             {
@@ -13,8 +12,18 @@ var user = {
             }
         )
     },
-    getInfo: function(callback) {
-        // $.get(地址，参数，回调)
+    getInfo: () => {
         return $.get(APIURLS.user_getInfo)
+    },
+    modInfo: (fd)=> {
+        // $.get(地址，参数，回调)
+        return $.ajax(
+            {
+                url:APIURLS.user_modInfo,
+                type:"post",
+                processData: false, // 不要让jquery去处理formdata数据
+                contentType: false, // 不要使用默认的请求头
+                data:fd
+            })
     }
 }

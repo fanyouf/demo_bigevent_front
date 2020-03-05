@@ -36,10 +36,13 @@ body{
     width:400px;
     height:310px;
     background-color: #edeff0;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px rgba(0,0,0,.1);
 }
 
 .login_form{
     position: relative;
+    padding:30px;
 }
 
 .login_form .icon-user{
@@ -65,9 +68,9 @@ body{
     width:334px;
     height:37px;
     padding:0px;
-    text-indent:40px;
+  
     border:1px solid #ddd;
-    margin:27px auto 0;
+    
     outline:none;
 }
 .input_sub{

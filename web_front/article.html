@@ -65,12 +65,10 @@
                 <p>2016年，Neuralink在美国加利福尼亚州以医学研究公司的名义成立，之后一直低调运行。</p>
 
             </div>
-            <div class="article_links">
-                上一篇： <a href="" id="article_links_prev">没有了</a><br>
-                下一篇： <a href="#" id="article_links_next">没有了</a>
-            </div>
-
+ 
+            <hr>
             <form action="" class="comment_form">
+                <h4>添加评论</h4>
                 <div class="form_group">
                     <label>用户名：</label>
                     <input type="text" placeholder="请输入用户名" class="comment_name" id="comment_name">
@@ -80,10 +78,11 @@
                     <textarea placeholder="请发表您的评论" class="comment_input" id="comment_content"></textarea>
                 </div>
                 <div class="form_group">
-                    <input type="button" id="btnAdd" name="" value="评 论" class="comment_sub"></div>
+                    <input type="button" id="btnAdd" name="" value="评 论" class="comment_sub">
+                </div>
             </form>
 
-            <div class="comment_count">
+            <div class="comment_count" id="comment_count_box">
                 <span id="comment_count"></span>条评论
             </div>
 
@@ -101,49 +100,9 @@
         <div class="right_con setfl">
             <div class="common_wrap">
                 <h3><i class="fa fa-bar-chart"></i> 一周热门排行</h3>
-                <ul class="content_list">
-                    <li><span class="first">1</span><a href="#">神奇的水滴摄影，泡泡中的世界泡泡中的世界</a></li>
-                    <li><span class="second">2</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span class="third">3</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span>4</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span>5</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span>6</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span>7</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                </ul>
-            </div>
-            <div class="common_wrap">
-                <h3><i class="fa fa-commenting-o"></i> 最新评论</h3>
-                <ul class="content_list comment_list">
-                    <li>
-                        <span>山</span>
-                        <b><em>山治</em> 9个月前(08-14)说:</b>
-                        <strong>挺会玩的</strong>
-                    </li>
-                    <li>
-                        <span>丽</span>
-                        <b><em>丽丽</em> 9个月前(08-14)说:9个月前(08-14)说:9个月前(08-14)说:</b>
-                        <strong>挺会玩的挺会玩的挺会玩的挺会玩的</strong>
-                    </li>
-                    <li>
-                        <span>R</span>
-                        <b><em>Rechael</em> 9个月前(08-14)说:</b>
-                        <strong>挺会玩的</strong>
-                    </li>
-                    <li>
-                        <span>J</span>
-                        <b><em>John</em> 9个月前(08-14)说:</b>
-                        <strong>挺会玩的</strong>
-                    </li>
-                    <li>
-                        <span>段</span>
-                        <b><em>段正淳</em> 9个月前(08-14)说:</b>
-                        <strong>挺会玩的</strong>
-                    </li>
-                    <li>
-                        <span>乔</span>
-                        <b><em>乔峰</em> 9个月前(08-14)说:</b>
-                        <strong>挺会玩的</strong>
-                    </li>
+
+                <ul class="content_list" id="rank_list">
+
                 </ul>
             </div>
         </div>
@@ -177,7 +136,21 @@
     <script src="./js/dayjs/relative.min.js"></script>
     <script src="./js/dayjs/zh_cn.js"></script>
 
-
+    <script id="temp_rank" type="text/html">
+        {{each data item idx}}
+        <li>
+            {{if idx==0}}
+                <span class="first">
+            {{else if idx==1}}
+                <span class="second">
+            {{else if idx==2}}
+                <span class="third">
+            {{else}}
+                <span>
+            {{/if}}
+            {{idx+1}}</span><a href="./article.html?id={{item.id}}">{{item.title}}</a></li>        
+        {{/each}}
+    </script>
     <script type="text/html" id="temp_cate">
         {{each data item}}
             {{if item.cur}}
@@ -199,6 +172,7 @@
         {{/each}}
     </script>
     <script>
+        
         // dayjs使用插件
         // 因为你引入了 “relative.min.js”，
         // 所以就有了 dayjs_plugin_relativeTime
@@ -214,31 +188,24 @@
         article.getDetail(id).then(function (res) {
             console.log(res);
             // 在文章详情数据中，res.data.type保存是类型的编号
-            var typeId = res.data.type_id
-
-            let { title, author, date, content, prev, next, read } = res.data;
+            let { title, author,typeId, date, content, prev, next, read,typeName,visitedNum } = res.data;
 
             // 把res.data中的数据，展示在dom中
             $('#article_title').text(title)
             $('#article_author').text(author)
             $('#article_date').text(date)
+            $('#article_type').text(typeName)
 
-            // content: 保存是html代码
-            // $('#article_content').text(content)
+            // content: 保存是html代码，故使用html()
             $('#article_content').html(content)
-            $('#article_read').text(read)
+            $('#article_read').text(visitedNum)
 
-            if (prev) {
-                $('#article_links_prev').attr('href', `./article.html?id=${prev.id}`)
-                $('#article_links_prev').text(`${prev.title}`)
-            }
-
-            if (next) {
-                $('#article_links_next').attr('href', `./article.html?id=${next.id}`)
-                $('#article_links_next').text(`${next.title}`)
-            }
-
-
+            article.getRank({ typeId }).then(res => {
+                if (res.code === 200) {
+                    var htmlStr = template("temp_rank", res);
+                    $("#rank_list").html(htmlStr)
+                }
+            })
 
             // 在文章详情数据中，res.data.type保存是类型的编号
             // 但是，要显示在页面上的却要是类型的名称。
@@ -270,7 +237,7 @@
             })
         })
 
-
+        
         // 添加评论
         $('#btnAdd').click(function () {
             // 1. 获取信息
@@ -305,15 +272,17 @@
                 res.data.forEach(function (item) {
                     
                     // item.relativeDt = dayjs(item.dt).toNow()
-                    item.relativeDt = dayjs().to(dayjs(item.dt))
+                    item.relativeDt = dayjs().to(dayjs(item.createAt))
                 })
                 console.log(res.data)
                 // 用模板引擎 渲染数据
                 var htmlStr = template('temp_comment', res);
                 $('#comment_list').html(htmlStr)
+
+                res.data.length ?  $('#comment_count_box').show(): $('#comment_count_box').hide()
+                
                 $('#comment_count').text(res.data.length)
                 $('#comment_count1').text(res.data.length)
-
             })
         }
         getAndShow();

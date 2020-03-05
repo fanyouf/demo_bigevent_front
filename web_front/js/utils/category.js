@@ -1,7 +1,6 @@
 
 var category = {
-    show : function( ){
-        return $.get(APIURLS.category_show)
-     
-    }
+	show : function( ){
+		return $.get(APIURLS.category_show)
+	}
 }

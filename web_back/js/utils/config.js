@@ -67,7 +67,7 @@ $.ajaxSetup({
       // console.dir(xhr)
       // console.dir(ts)
       if(xhr.status===401){
-         top.location="/web_back/login.html"
+         top.location="./login.html"
       }
    }
 });

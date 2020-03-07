@@ -1,10 +1,10 @@
-
 // 用户的操作
 var user = {
-    logout:  () => $.post(APIURLS.user_logout), 
+    logout:  function ()  {
+        $.post(APIURLS.user_logout)
+    }, 
 
     login: (myName, myPassword) => {
-        // console.log(myName,myPassword)
         return $.post(APIURLS.user_login,
             {
                 user_name: myName, 
